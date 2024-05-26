@@ -114,7 +114,7 @@ void getTodoList(String userId) async {
       "id":id
     };
 
-    var response = await http.post(Uri.parse(deleteTodo),
+    var response = await http.delete(Uri.parse(deleteTodo),
         headers: {"Content-Type":"application/json"},
         body: jsonEncode(regBody)
     );
@@ -142,7 +142,7 @@ void getTodoList(String userId) async {
                  SizedBox(height: 10.0),
                  Text('ToDo with NodeJS + Mongodb',style: TextStyle(fontSize: 30.0,fontWeight: FontWeight.w700),),
                  SizedBox(height: 8.0),
-                 Text('tasks', style: TextStyle(fontSize: 20)),
+                 Text('${items != null ? items!.length : 0} ${items != null && items!.length == 1 ? 'task' : 'tasks' }', style: TextStyle(fontSize: 20)),
 
                ],
              ),
@@ -186,11 +186,11 @@ void getTodoList(String userId) async {
                               children: [
                               Text(items![index]['description'] ?? 'no desc'),
                               Text(items![index]['deadline'])
-                            ],
-                          ),
+                            ], 
+                          ), 
                              trailing: Icon(Icons.arrow_back),
-                           ),
-                         ),
+                           ), 
+                         ), 
                        );
                      }
                  ),
