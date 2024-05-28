@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -22,8 +23,10 @@ class _DashboardState extends State<Dashboard> {
   TextEditingController _todoDesc = TextEditingController();
   DateTime? _selectedeadline;
   String _formattedDeadline = 'Select Deadline';
+  TimeOfDay _selectedtime = TimeOfDay.now();
   List? items;
   @override
+
   void _selectDeadline(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -31,12 +34,29 @@ class _DashboardState extends State<Dashboard> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != _selectedeadline) {
-      setState(() {
-        _selectedeadline = picked;
-        _formattedDeadline = "${picked.year}-${picked.month}-${picked.day}";
-      });
+    if (picked != null) {
+      final TimeOfDay? pickedtime = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+
+      if (pickedtime != null) {
+        setState(() {
+          _selectedeadline = DateTime(
+            picked.year,
+            picked.month,
+            picked.day,
+            pickedtime.hour,
+            pickedtime.minute,
+
+          );
+          _formattedDeadline = "${picked.day} ${pickedtime.format(context)}";
+        });
+      }
     }
+    //if (picked != null && picked != _selectedeadline) {
+     // setState(() {
+       // _selectedeadline = picked;
+        //_formattedDeadline = "${picked.year}-${picked.month}-${picked.day}";
+      //});
+    //}
   }
   void initState() {
     // TODO: implement initState
